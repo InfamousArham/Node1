@@ -1,0 +1,22 @@
+{
+  "name": "MCSManager Node",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:0-18-bullseye",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": []
+    }
+  },
+  "portsAttributes": {
+    "24444": {
+      "label": "MCSManager Daemon",
+      "onAutoForward": "notify"
+    }
+  },
+  // This command runs once after the container is created.
+  "postCreateCommand": "sudo su -c 'wget -qO- https://script.mcsmanager.com/setup.sh | bash'",
+  // This command runs after the container starts, and it ensures MCSManager services are running.
+  "postStartCommand": "bash -c 'cd /opt/mcsmanager && ./start-daemon.sh && ssh -R 80:localhost:24444 serveo.net'"
+}
